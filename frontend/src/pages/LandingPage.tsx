@@ -341,7 +341,7 @@ export const LandingPage = () => {
         <div className="mt-8 flex flex-col gap-3 border-t border-ink/10 pt-4 text-xs font-semibold uppercase tracking-[0.18em] text-ink/45 md:flex-row md:items-center md:justify-between">
           <span>BriefLens. Study guidance, not ghostwriting.</span>
           <div className="inline-flex items-center gap-2 text-ink/60">
-            <span>Developed by emnex</span>
+            <span>Built with love by</span>
             <a
               className="inline-flex items-center gap-2 transition hover:text-ink"
               href="https://github.com/emnextech"
