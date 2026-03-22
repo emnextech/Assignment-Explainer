@@ -9,6 +9,15 @@ const getErrorMessage = (error: unknown) => {
 const includesAny = (message: string, fragments: string[]) =>
   fragments.some((fragment) => message.includes(fragment));
 
+export const isRateLimitError = (error: unknown) =>
+  includesAny(getErrorMessage(error), [
+    "too many requests",
+    "rate limit",
+    "security purposes",
+    "too many signup attempts",
+    "too many requests from this ip"
+  ]);
+
 export const isVerificationError = (error: unknown) =>
   includesAny(getErrorMessage(error), [
     "email not confirmed",
@@ -34,7 +43,7 @@ export const getLoginErrorMessage = (error: unknown) => {
     return "Invalid email or password.";
   }
 
-  if (includesAny(message, ["too many requests", "rate limit"])) {
+  if (isRateLimitError(error)) {
     return "Too many sign-in attempts. Wait a moment, then try again.";
   }
 
@@ -52,17 +61,15 @@ export const getSignupErrorMessage = (error: unknown) => {
     return "Choose a stronger password with upper and lower case letters and at least one number.";
   }
 
-  if (includesAny(message, ["too many requests", "rate limit"])) {
-    return "Too many signup attempts from this device. Wait a moment, then try again.";
+  if (isRateLimitError(error)) {
+    return "Too many signup attempts came from this shared network or device. Wait a minute, then try again. If your account was already created, go to login instead.";
   }
 
   return "We could not create your account right now. Please review your details and try again.";
 };
 
 export const getResendVerificationMessage = (error: unknown) => {
-  const message = getErrorMessage(error);
-
-  if (includesAny(message, ["too many requests", "rate limit"])) {
+  if (isRateLimitError(error)) {
     return "You requested verification emails too quickly. Wait a minute, then try again.";
   }
 

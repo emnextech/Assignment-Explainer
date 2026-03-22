@@ -1,4 +1,4 @@
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AuthLayout } from "../components/auth/AuthLayout";
@@ -6,9 +6,11 @@ import { AuthNotice } from "../components/auth/AuthNotice";
 import { PasswordChecklist } from "../components/auth/PasswordChecklist";
 import { PasswordInput } from "../components/ui/PasswordInput";
 import { useAuth } from "../hooks/useAuth";
-import { getSignupErrorMessage } from "../lib/authMessages";
+import { getSignupErrorMessage, isRateLimitError } from "../lib/authMessages";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
+
+const SIGNUP_RETRY_COOLDOWN_MS = 60_000;
 
 const validatePassword = (password: string) => {
   if (password.length < 8) {
@@ -38,11 +40,46 @@ export const SignupPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [cooldownUntil, setCooldownUntil] = useState<number | null>(null);
+  const [now, setNow] = useState(() => Date.now());
   const [submitting, setSubmitting] = useState(false);
   const passwordHint = useMemo(() => validatePassword(password), [password]);
+  const cooldownSeconds = useMemo(() => {
+    if (!cooldownUntil) {
+      return 0;
+    }
+
+    return Math.max(0, Math.ceil((cooldownUntil - now) / 1000));
+  }, [cooldownUntil, now]);
+  const isCooldownActive = cooldownSeconds > 0;
+
+  useEffect(() => {
+    if (!cooldownUntil) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      const currentTime = Date.now();
+      setNow(currentTime);
+
+      if (currentTime >= cooldownUntil) {
+        setCooldownUntil(null);
+      }
+    }, 1000);
+
+    return () => window.clearInterval(timer);
+  }, [cooldownUntil]);
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    if (isCooldownActive) {
+      setError(
+        `Signup is cooling down for this network. Try again in ${cooldownSeconds}s or log in if the account was already created.`
+      );
+      return;
+    }
+
     setSubmitting(true);
     setError(null);
 
@@ -74,6 +111,11 @@ export const SignupPage = () => {
         }
       );
     } catch (submissionError) {
+      if (isRateLimitError(submissionError)) {
+        setCooldownUntil(Date.now() + SIGNUP_RETRY_COOLDOWN_MS);
+        setNow(Date.now());
+      }
+
       setError(getSignupErrorMessage(submissionError));
     } finally {
       setSubmitting(false);
@@ -110,6 +152,17 @@ export const SignupPage = () => {
       title="Create your account"
     >
       <form className="space-y-3.5" onSubmit={handleSubmit}>
+        {isCooldownActive ? (
+          <AuthNotice variant="warning">
+            Signup is temporarily paused for this network for {cooldownSeconds}s. This can happen on
+            shared Wi-Fi when another person has already triggered the signup limit.
+          </AuthNotice>
+        ) : null}
+        <AuthNotice variant="info">
+          If you are on school, office, or hostel Wi-Fi, another person on the same network can
+          trigger Supabase signup rate limits. If that happens, wait a minute or switch to login if
+          the account was already created.
+        </AuthNotice>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Full name
           <Input
@@ -175,11 +228,20 @@ export const SignupPage = () => {
         <Button
           className="w-full bg-accent"
           disabled={
-            submitting || !fullName.trim() || !email.trim() || !password || !confirmPassword
+            submitting ||
+            isCooldownActive ||
+            !fullName.trim() ||
+            !email.trim() ||
+            !password ||
+            !confirmPassword
           }
           type="submit"
         >
-          {submitting ? "Creating account..." : "Create account"}
+          {submitting
+            ? "Creating account..."
+            : isCooldownActive
+              ? `Try again in ${cooldownSeconds}s`
+              : "Create account"}
         </Button>
       </form>
     </AuthLayout>
