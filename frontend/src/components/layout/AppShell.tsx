@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 
+import briefLensMark from "../../assets/brand/brieflens-mark.svg";
 import { useAuth } from "../../hooks/useAuth";
 import { useProfileIdentity } from "../../hooks/useProfile";
 import { Button } from "../ui/Button";
@@ -34,9 +35,12 @@ export const AppShell = ({
           <div className="flex items-center gap-3">
             <Link
               to="/dashboard"
-              className="shrink-0 font-display text-xl font-semibold text-ink md:text-2xl"
+              className="shrink-0"
             >
-              Assignment Explainer
+              <span className="flex items-center gap-2">
+                <img alt="BriefLens logo" className="h-8 w-8" src={briefLensMark} />
+                <span className="font-display text-xl font-semibold text-ink md:text-2xl">BriefLens</span>
+              </span>
             </Link>
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-2 md:flex">
               {links.map((link) => (

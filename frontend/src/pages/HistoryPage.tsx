@@ -13,9 +13,9 @@ export const HistoryPage = () => {
   const historyQuery = useHistoryList();
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const items = historyQuery.data?.items ?? [];
+  const items = historyQuery.data?.items;
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
+    return (items ?? []).filter((item) => {
       const matchesQuery =
         !query.trim() ||
         [item.title, item.courseName, item.questionText]
@@ -27,6 +27,7 @@ export const HistoryPage = () => {
       return matchesQuery && matchesStatus;
     });
   }, [items, query, statusFilter]);
+  const itemCount = items?.length ?? 0;
 
   return (
     <AppShell onSignOut={() => void signOut()}>
@@ -86,9 +87,9 @@ export const HistoryPage = () => {
         </div>
       ) : (
         <EmptyState
-          title={items.length ? "No matching explanations" : "No history yet"}
+          title={itemCount ? "No matching explanations" : "No history yet"}
           body={
-            items.length
+            itemCount
               ? "Try a different search term or status filter."
               : "Once you generate an explanation, it will show up here with its status and detail view."
           }

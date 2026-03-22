@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { AppShell } from "../components/layout/AppShell";
+import { AiProgressChart } from "../components/ui/AiProgressChart";
 import { EmptyState } from "../components/ui/EmptyState";
 import { StatusBadge } from "../components/ui/StatusBadge";
 import { useAuth } from "../hooks/useAuth";
@@ -71,14 +72,15 @@ export const DashboardPage = () => {
                   key={item.explanationId}
                   to={`/result/${item.explanationId}`}
                 >
-                  <div className="flex flex-wrap items-center justify-between gap-3">
-                    <div>
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
                       <p className="font-display text-2xl text-ink">{item.title ?? "Untitled assignment"}</p>
                       <p className="mt-1 text-sm text-ink/60">{item.courseName ?? "General course"}</p>
                     </div>
                     <StatusBadge status={item.status} />
                   </div>
-                  <p className="mt-4 line-clamp-2 text-sm leading-7 text-ink/70">{item.questionText}</p>
+                  <p className="mt-4 text-sm leading-7 text-ink/70">{item.questionText}</p>
+                  <AiProgressChart explanationId={item.explanationId} status={item.status} />
                 </Link>
               ))}
             </div>

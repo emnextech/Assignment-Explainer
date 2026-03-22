@@ -10,6 +10,12 @@ import {
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
 
+type ApiErrorPayload = {
+  message?: unknown;
+  error?: unknown;
+  status?: unknown;
+};
+
 const getHeaders = (accessToken: string | null) => {
   const headers: Record<string, string> = {
     "Content-Type": "application/json"
@@ -27,20 +33,23 @@ async function parseJson(response: Response) {
   return text ? JSON.parse(text) : null;
 }
 
-function getApiErrorMessage(data: any, fallback: string) {
-  if (typeof data?.message === "string" && data.message.trim()) {
-    return data.message;
+function getApiErrorMessage(data: unknown, fallback: string) {
+  const payload: ApiErrorPayload =
+    typeof data === "object" && data !== null ? (data as ApiErrorPayload) : {};
+
+  if (typeof payload.message === "string" && payload.message.trim()) {
+    return payload.message;
   }
 
-  if (typeof data?.error === "string" && data.error.trim()) {
-    return data.error;
+  if (typeof payload.error === "string" && payload.error.trim()) {
+    return payload.error;
   }
 
-  if (data?.status === "failed") {
+  if (payload.status === "failed") {
     return "The explanation request was saved, but the AI generation failed. Open the history item for details or try again.";
   }
 
-  if (data?.status === "refused") {
+  if (payload.status === "refused") {
     return "The request was refused by the AI safety system. Try simplifying or rephrasing the assignment prompt.";
   }
 

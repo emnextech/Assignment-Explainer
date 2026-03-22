@@ -40,7 +40,7 @@ export const GuestOnly = ({ allowUnverifiedSession = false }: { allowUnverifiedS
     return (
       <Navigate
         replace
-        to={`/verify-email?email=${encodeURIComponent(session.user.email ?? "")}&next=${encodeURIComponent(next)}`}
+        to={`/verify-email?email=${encodeURIComponent(session.user.email ?? "")}&next=${encodeURIComponent(next)}&source=session`}
       />
     );
   }

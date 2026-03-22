@@ -26,7 +26,7 @@ export const RequireAuth = () => {
     return (
       <Navigate
         replace
-        to={`/verify-email?email=${encodeURIComponent(session.user.email ?? "")}&next=${encodeURIComponent(intendedRoute)}`}
+        to={`/verify-email?email=${encodeURIComponent(session.user.email ?? "")}&next=${encodeURIComponent(intendedRoute)}&source=session`}
       />
     );
   }

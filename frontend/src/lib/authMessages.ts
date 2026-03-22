@@ -69,7 +69,7 @@ export const getResendVerificationMessage = (error: unknown) => {
   return "We could not resend the verification email right now. Please try again shortly.";
 };
 
-export const getPasswordResetRequestMessage = (_error: unknown) =>
+export const getPasswordResetRequestMessage = () =>
   "We could not start password recovery right now. Please try again shortly.";
 
 export const getPasswordUpdateMessage = (error: unknown) => {

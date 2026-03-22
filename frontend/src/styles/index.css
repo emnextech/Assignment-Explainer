@@ -8,11 +8,18 @@
   font-family: "Trebuchet MS", "Segoe UI", sans-serif;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #f6efe6;
+  background:
+    radial-gradient(circle at 15% 8%, rgba(223, 109, 45, 0.12), transparent 28%),
+    radial-gradient(circle at 80% 18%, rgba(15, 118, 110, 0.1), transparent 24%),
+    #f6efe6;
 }
 
 * {
@@ -26,4 +33,21 @@ a {
 
 #root {
   min-height: 100vh;
+}
+
+.motion-stable {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

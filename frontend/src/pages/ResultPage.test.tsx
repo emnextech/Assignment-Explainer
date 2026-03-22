@@ -33,11 +33,21 @@ vi.mock("../hooks/useAssignments", () => ({
   })
 }));
 
+vi.mock("../hooks/useProfile", () => ({
+  useProfileIdentity: () => ({
+    displayName: "Student",
+    initials: "ST",
+    university: "Cavendish University"
+  })
+}));
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual<typeof import("react-router-dom")>("react-router-dom");
   return {
     ...actual,
     useParams: () => ({ id: "id" }),
+    useNavigate: () => vi.fn(),
+    NavLink: ({ children }: { children: ReactNode }) => <>{children}</>,
     Link: ({ children }: { children: ReactNode }) => <>{children}</>
   };
 });

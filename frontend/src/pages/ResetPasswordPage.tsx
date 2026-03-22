@@ -2,6 +2,8 @@ import { useMemo, useState, type FormEvent } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 
 import { AuthLayout } from "../components/auth/AuthLayout";
+import { AuthNotice } from "../components/auth/AuthNotice";
+import { PasswordChecklist } from "../components/auth/PasswordChecklist";
 import { Button } from "../components/ui/Button";
 import { PasswordInput } from "../components/ui/PasswordInput";
 import { useAuth } from "../hooks/useAuth";
@@ -84,11 +86,11 @@ export const ResetPasswordPage = () => {
         },
         {
           title: "Strong new credentials",
-          body: "The form checks the new password before submission so the student gets guidance before Supabase rejects it."
+          body: "The form checks the new password before submission so you get guidance before Supabase rejects it."
         },
         {
           title: "Fast handoff",
-          body: "After a successful update, the flow moves the student back into the app instead of leaving them stranded."
+          body: "After a successful update, the flow moves you back into the app instead of leaving you stranded."
         }
       ]}
       asideTitle="Password update"
@@ -104,7 +106,7 @@ export const ResetPasswordPage = () => {
       }
       title="Choose a new password"
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-3.5" onSubmit={handleSubmit}>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           New password
           <PasswordInput
@@ -127,16 +129,16 @@ export const ResetPasswordPage = () => {
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </label>
-        <div className="rounded-[28px] border border-ink/8 bg-sand px-4 py-3 text-sm leading-7 text-ink/72">
-          Use at least 8 characters with upper and lower case letters and at least one number.
-          {password && !error && passwordHint ? (
-            <p className="mt-2 font-semibold text-amber-700">{passwordHint}</p>
-          ) : password ? (
-            <p className="mt-2 font-semibold text-emerald-700">Your new password looks strong.</p>
-          ) : null}
-        </div>
-        {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
-        {error ? <p className="text-sm font-semibold text-rose-600">{error}</p> : null}
+        <PasswordChecklist password={password} />
+        {password && !error && passwordHint ? (
+          <AuthNotice variant="warning">{passwordHint}</AuthNotice>
+        ) : null}
+        {message ? <AuthNotice variant="success">{message}</AuthNotice> : null}
+        {error ? (
+          <AuthNotice variant="error" politeness="assertive">
+            {error}
+          </AuthNotice>
+        ) : null}
         <Button
           className="w-full bg-accent"
           disabled={submitting || !password || !confirmPassword}

@@ -2,27 +2,22 @@ import { useState, type FormEvent } from "react";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { AuthLayout } from "../components/auth/AuthLayout";
+import { AuthNotice } from "../components/auth/AuthNotice";
 import { PasswordInput } from "../components/ui/PasswordInput";
 import { useAuth } from "../hooks/useAuth";
-import {
-  getLoginErrorMessage,
-  getResendVerificationMessage,
-  isVerificationError
-} from "../lib/authMessages";
+import { getLoginErrorMessage, isVerificationError } from "../lib/authMessages";
 import { clearRedirectTarget, resolveRedirectTarget, writeRedirectTarget } from "../lib/authRedirect";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 
 export const LoginPage = () => {
-  const { authBootstrapError, resendVerification, session, isVerified, signIn } = useAuth();
+  const { authBootstrapError, session, isVerified, signIn } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const initialEmail = new URLSearchParams(location.search).get("email") ?? "";
   const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [message, setMessage] = useState<string | null>(null);
-  const [resending, setResending] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const next = resolveRedirectTarget(location.search, "/dashboard");
 
@@ -36,17 +31,17 @@ export const LoginPage = () => {
     event.preventDefault();
     setSubmitting(true);
     setError(null);
-    setMessage(null);
 
     try {
-      await signIn(email, password);
+      const normalizedEmail = email.trim().toLowerCase();
+      await signIn(normalizedEmail, password);
       clearRedirectTarget();
       navigate(next, { replace: true });
     } catch (submissionError) {
       if (isVerificationError(submissionError)) {
         writeRedirectTarget(next);
         navigate(
-          `/verify-email?email=${encodeURIComponent(email)}&next=${encodeURIComponent(next)}`,
+          `/verify-email?email=${encodeURIComponent(email.trim().toLowerCase())}&next=${encodeURIComponent(next)}&source=login`,
           { replace: true }
         );
         return;
@@ -55,26 +50,6 @@ export const LoginPage = () => {
       setError(getLoginErrorMessage(submissionError));
     } finally {
       setSubmitting(false);
-    }
-  };
-
-  const handleResendVerification = async () => {
-    if (!email) {
-      setError("Enter the email address you want to verify first.");
-      return;
-    }
-
-    setResending(true);
-    setError(null);
-    setMessage(null);
-
-    try {
-      await resendVerification(email);
-      setMessage("A fresh verification email has been sent.");
-    } catch (submissionError) {
-      setError(getResendVerificationMessage(submissionError));
-    } finally {
-      setResending(false);
     }
   };
 
@@ -107,16 +82,16 @@ export const LoginPage = () => {
       }
       title="Welcome back"
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-3.5" onSubmit={handleSubmit}>
         {authBootstrapError ? (
-          <p className="rounded-3xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">
+          <AuthNotice variant="warning" politeness="assertive">
             {authBootstrapError}
-          </p>
+          </AuthNotice>
         ) : null}
         {needsVerification ? (
-          <p className="rounded-3xl bg-amber-50 px-4 py-3 text-sm font-semibold text-amber-700">
-            Verify your email first, then sign in.
-          </p>
+          <AuthNotice variant="warning">
+            Verify your email first, then sign in. If you need another link, use the verification screen instead of retrying here.
+          </AuthNotice>
         ) : null}
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Email address
@@ -127,12 +102,13 @@ export const LoginPage = () => {
             enterKeyHint="next"
             inputMode="email"
             name="email"
-            placeholder="student@example.com"
+            placeholder="example@gmail.com"
             spellCheck={false}
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
+          <p className="text-xs font-semibold text-ink/50">Use the same email you used during signup.</p>
         </label>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Password
@@ -149,17 +125,20 @@ export const LoginPage = () => {
           <Link to="/forgot-password" className="font-semibold text-accent">
             Forgot password?
           </Link>
-          <button
-            className="font-semibold text-ink/70 underline-offset-4 hover:text-ink hover:underline"
-            disabled={resending}
-            onClick={() => void handleResendVerification()}
-            type="button"
-          >
-            {resending ? "Sending verification..." : "Resend verification email"}
-          </button>
+          {needsVerification ? (
+            <Link
+              className="font-semibold text-ink/70 underline-offset-4 hover:text-ink hover:underline"
+              to={`/verify-email?next=${encodeURIComponent(next)}${email.trim() ? `&email=${encodeURIComponent(email.trim().toLowerCase())}` : ""}&source=login`}
+            >
+              Open verification page
+            </Link>
+          ) : null}
         </div>
-        {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
-        {error ? <p className="text-sm font-semibold text-rose-600">{error}</p> : null}
+        {error ? (
+          <AuthNotice variant="error" politeness="assertive">
+            {error}
+          </AuthNotice>
+        ) : null}
         <Button
           className="w-full bg-accent"
           disabled={submitting || !email.trim() || !password}

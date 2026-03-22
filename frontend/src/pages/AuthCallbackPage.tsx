@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import type { EmailOtpType } from "@supabase/supabase-js";
 
+import { AuthNotice } from "../components/auth/AuthNotice";
 import { supabase } from "../lib/supabase";
 import { clearRedirectTarget, resolveRedirectTarget } from "../lib/authRedirect";
 
@@ -102,11 +103,17 @@ export const AuthCallbackPage = () => {
         <h1 className="font-display text-4xl text-ink">
           {error ? "Authentication link problem" : "Securing your session"}
         </h1>
-        <p className="mt-4 text-sm leading-7 text-ink/65">
-          {error
-            ? error
-            : "We are confirming your email action and preparing the next secure page."}
-        </p>
+        <div className="mt-4">
+          {error ? (
+            <AuthNotice variant="error" politeness="assertive">
+              {error}
+            </AuthNotice>
+          ) : (
+            <AuthNotice variant="info">
+              We are confirming your email action and preparing the next secure page.
+            </AuthNotice>
+          )}
+        </div>
         {error ? (
           <div className="mt-6 flex flex-wrap gap-3">
             <Link

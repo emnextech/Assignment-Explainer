@@ -8,7 +8,7 @@ export const Button = ({
 }: PropsWithChildren<ButtonHTMLAttributes<HTMLButtonElement>>) => (
   <button
     className={clsx(
-      "inline-flex items-center justify-center rounded-full px-5 py-3.5 text-base font-semibold transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm",
+      "inline-flex shrink-0 items-center justify-center whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold leading-none transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60",
       "bg-ink text-white shadow-soft",
       className
     )}

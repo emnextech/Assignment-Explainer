@@ -2,6 +2,8 @@ import { useMemo, useState, type FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { AuthLayout } from "../components/auth/AuthLayout";
+import { AuthNotice } from "../components/auth/AuthNotice";
+import { PasswordChecklist } from "../components/auth/PasswordChecklist";
 import { PasswordInput } from "../components/ui/PasswordInput";
 import { useAuth } from "../hooks/useAuth";
 import { getSignupErrorMessage } from "../lib/authMessages";
@@ -64,8 +66,8 @@ export const SignupPage = () => {
     }
 
     try {
-      await signUp(email.trim(), password, fullName.trim());
-      navigate(`/verify-email?email=${encodeURIComponent(email)}`, {
+      await signUp(email.trim().toLowerCase(), password, fullName.trim());
+      navigate(`/verify-email?email=${encodeURIComponent(email.trim().toLowerCase())}&source=signup`, {
         replace: true
       });
     } catch (submissionError) {
@@ -80,7 +82,7 @@ export const SignupPage = () => {
       asideItems={[
         {
           title: "Verification first",
-          body: "Creating the account sends the student to a check-email screen. Access only opens after the inbox confirmation is complete."
+          body: "Creating the account sends you to a check-email screen. Access only opens after inbox confirmation is complete."
         },
         {
           title: "Name-first profile",
@@ -92,8 +94,8 @@ export const SignupPage = () => {
         }
       ]}
       asideTitle="Signup experience"
-      badge="Student onboarding"
-      description="Create your account with your real name, verify your email, and then enter the student dashboard with a persistent session."
+      badge="Account onboarding"
+      description="Create your account with your real name, verify your email, and then enter your dashboard with a persistent session."
       footer={
         <p>
           Already registered?{" "}
@@ -104,14 +106,15 @@ export const SignupPage = () => {
       }
       title="Create your account"
     >
-      <form className="space-y-4" onSubmit={handleSubmit}>
+      <form className="space-y-3.5" onSubmit={handleSubmit}>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Full name
           <Input
+            autoCapitalize="words"
             autoComplete="name"
             enterKeyHint="next"
             name="fullName"
-            placeholder="Emmanuel Ngwenyama"
+            placeholder="Your full name"
             value={fullName}
             onChange={(event) => setFullName(event.target.value)}
           />
@@ -125,12 +128,13 @@ export const SignupPage = () => {
             enterKeyHint="next"
             inputMode="email"
             name="email"
-            placeholder="student@example.com"
+            placeholder="example@gmail.com"
             spellCheck={false}
             type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
+          <p className="text-xs font-semibold text-ink/50">Use any email you can access for verification.</p>
         </label>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Create password
@@ -154,18 +158,15 @@ export const SignupPage = () => {
             onChange={(event) => setConfirmPassword(event.target.value)}
           />
         </label>
-        <div className="rounded-[28px] border border-ink/8 bg-sand px-4 py-3 text-sm text-ink/72">
-          <p className="font-semibold text-ink">Password checklist</p>
-          <p className="mt-1 leading-7">
-            Use at least 8 characters with upper and lower case letters and at least one number.
-          </p>
-          {password && passwordHint ? (
-            <p className="mt-2 font-semibold text-amber-700">{passwordHint}</p>
-          ) : password ? (
-            <p className="mt-2 font-semibold text-emerald-700">Strong enough for signup.</p>
-          ) : null}
-        </div>
-        {error ? <p className="text-sm font-semibold text-rose-600">{error}</p> : null}
+        <PasswordChecklist password={password} />
+        {password && passwordHint ? (
+          <AuthNotice variant="warning">{passwordHint}</AuthNotice>
+        ) : null}
+        {error ? (
+          <AuthNotice variant="error" politeness="assertive">
+            {error}
+          </AuthNotice>
+        ) : null}
         <Button
           className="w-full bg-accent"
           disabled={submitting || !fullName.trim() || !email.trim() || !password || !confirmPassword}
