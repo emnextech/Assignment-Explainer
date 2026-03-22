@@ -1,0 +1,2 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+export const SectionCard = ({ title, children, subtitle }) => (_jsxs("section", { className: "rounded-[32px] border border-ink/8 bg-white p-6 shadow-soft", children: [_jsxs("div", { className: "mb-4", children: [_jsx("h2", { className: "font-display text-2xl text-ink", children: title }), subtitle ? _jsx("p", { className: "mt-1 max-w-2xl text-sm leading-7 text-ink/60", children: subtitle }) : null] }), children] }));
