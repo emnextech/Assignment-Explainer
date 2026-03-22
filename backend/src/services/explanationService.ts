@@ -6,8 +6,8 @@ import {
   type StructuredExplanation
 } from "@assignment-explainer/shared";
 
-import { createOpenAiClient } from "../lib/openai";
-import { env } from "../env";
+import { createOpenAiClient } from "../lib/openai.js";
+import { env } from "../env.js";
 
 const responseSchema = {
   type: "object",

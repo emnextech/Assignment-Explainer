@@ -6,7 +6,7 @@ import type {
   StructuredExplanation
 } from "@assignment-explainer/shared";
 
-import { supabaseAdmin } from "../lib/supabase";
+import { supabaseAdmin } from "../lib/supabase.js";
 
 type AssignmentInsert = Database["public"]["Tables"]["assignments"]["Insert"];
 type ExplanationInsert =

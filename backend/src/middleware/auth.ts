@@ -1,6 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 
-import { supabaseAdmin } from "../lib/supabase";
+import { supabaseAdmin } from "../lib/supabase.js";
 
 export type AuthContext = {
   userId: string;

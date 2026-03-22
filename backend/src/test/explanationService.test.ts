@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   createGeminiExplanationEngine,
   createOpenAiExplanationEngine
-} from "../services/explanationService";
+} from "../services/explanationService.js";
 
 const validResponse = {
   output_text: JSON.stringify({

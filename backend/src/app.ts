@@ -11,19 +11,19 @@ import {
   historyListResponseSchema
 } from "@assignment-explainer/shared";
 
-import { env } from "./env";
+import { env } from "./env.js";
 import {
   authenticateRequest,
   type AuthenticatedRequest
-} from "./middleware/auth";
+} from "./middleware/auth.js";
 import {
   createExplanationRepository,
   type ExplanationRepository
-} from "./repositories/explanations";
+} from "./repositories/explanations.js";
 import {
   createExplanationEngine,
   type ExplanationEngine
-} from "./services/explanationService";
+} from "./services/explanationService.js";
 
 const asyncHandler =
   (

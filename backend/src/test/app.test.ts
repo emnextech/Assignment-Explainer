@@ -3,10 +3,10 @@ import { describe, expect, it, vi } from "vitest";
 
 import type { ExplanationRecord } from "@assignment-explainer/shared";
 
-import { createApp } from "../app";
-import type { AuthenticatedRequest } from "../middleware/auth";
-import type { ExplanationRepository } from "../repositories/explanations";
-import type { ExplanationEngine } from "../services/explanationService";
+import { createApp } from "../app.js";
+import type { AuthenticatedRequest } from "../middleware/auth.js";
+import type { ExplanationRepository } from "../repositories/explanations.js";
+import type { ExplanationEngine } from "../services/explanationService.js";
 
 const authMiddleware = (request: any, _response: any, next: any) => {
   (request as AuthenticatedRequest).auth = {

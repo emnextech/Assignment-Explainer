@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 import type { Database } from "@assignment-explainer/shared";
 
-import { env } from "../env";
+import { env } from "../env.js";
 
 export const supabaseAdmin = createClient<Database>(
   env.SUPABASE_URL,
