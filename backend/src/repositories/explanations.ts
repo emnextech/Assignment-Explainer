@@ -5,6 +5,7 @@ import type {
   ExplanationRecord,
   StructuredExplanation
 } from "@assignment-explainer/shared";
+import { structuredExplanationSchema } from "@assignment-explainer/shared";
 
 import { supabaseAdmin } from "../lib/supabase.js";
 
@@ -26,6 +27,23 @@ const mapStructuredArray = (value: unknown): string[] => {
   return value.filter((item): item is string => typeof item === "string");
 };
 
+const getStructuredResult = (row: JoinedExplanationRow): StructuredExplanation | null => {
+  if (row.status !== "completed") {
+    return null;
+  }
+
+  const parsed = structuredExplanationSchema.safeParse({
+    simplifiedExplanation: row.simplified_explanation ?? "",
+    lecturerIntent: row.lecturer_intent ?? "",
+    stepByStep: mapStructuredArray(row.step_by_step),
+    suggestedStructure: mapStructuredArray(row.suggested_structure),
+    keyTopics: mapStructuredArray(row.key_topics),
+    commonMistakes: mapStructuredArray(row.common_mistakes)
+  });
+
+  return parsed.success ? parsed.data : null;
+};
+
 const toExplanationRecord = (row: JoinedExplanationRow): ExplanationRecord => ({
   assignmentId: row.assignment_id,
   explanationId: row.id,
@@ -40,17 +58,7 @@ const toExplanationRecord = (row: JoinedExplanationRow): ExplanationRecord => ({
   completedAt: row.completed_at,
   refusalReason: row.refusal_reason,
   errorMessage: row.error_message,
-  result:
-    row.status === "completed"
-      ? {
-          simplifiedExplanation: row.simplified_explanation ?? "",
-          lecturerIntent: row.lecturer_intent ?? "",
-          stepByStep: mapStructuredArray(row.step_by_step),
-          suggestedStructure: mapStructuredArray(row.suggested_structure),
-          keyTopics: mapStructuredArray(row.key_topics),
-          commonMistakes: mapStructuredArray(row.common_mistakes)
-        }
-      : null
+  result: getStructuredResult(row)
 });
 
 export type CreatePendingExplanationInput = {

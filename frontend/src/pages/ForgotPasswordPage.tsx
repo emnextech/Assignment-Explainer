@@ -77,10 +77,13 @@ export const ForgotPasswordPage = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <p className="text-xs font-semibold text-ink/50">Enter the email used for this account.</p>
+          <p className="text-xs font-semibold text-ink/50">
+            Enter the email used for this account.
+          </p>
         </label>
         <AuthNotice variant="info">
-          For privacy, we always show the same confirmation message whether the account exists or not.
+          For privacy, we always show the same confirmation message whether the account exists or
+          not.
         </AuthNotice>
         {message ? <AuthNotice variant="success">{message}</AuthNotice> : null}
         {error ? (

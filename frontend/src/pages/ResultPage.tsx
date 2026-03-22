@@ -18,7 +18,9 @@ const buildActionPlan = (steps: string[], topics: string[]) =>
 
 const buildWritingChecklist = (mistakes: string[], structure: string[]) =>
   [
-    structure[0] ? `Make sure your ${structure[0].toLowerCase()} sets the context and scope clearly.` : null,
+    structure[0]
+      ? `Make sure your ${structure[0].toLowerCase()} sets the context and scope clearly.`
+      : null,
     structure[structure.length - 1]
       ? `End with a ${structure[structure.length - 1].toLowerCase()} that answers the brief directly.`
       : null,
@@ -59,20 +61,34 @@ export const ResultPage = () => {
   const { signOut } = useAuth();
   const itemQuery = useHistoryItem(id);
   const item = itemQuery.data;
+  const errorMessage =
+    itemQuery.error instanceof Error
+      ? itemQuery.error.message
+      : "We could not load this explanation right now.";
 
   return (
     <AppShell onSignOut={() => void signOut()}>
       {itemQuery.isLoading ? (
-        <EmptyState title="Loading result" body="Pulling the explanation details from your history." />
+        <EmptyState
+          title="Loading result"
+          body="Pulling the explanation details from your history."
+        />
+      ) : itemQuery.isError ? (
+        <EmptyState title="Result unavailable" body={errorMessage} />
       ) : !item ? (
-        <EmptyState title="Result not found" body="This explanation may have been deleted or never existed." />
+        <EmptyState
+          title="Result not found"
+          body="This explanation may have been deleted or never existed."
+        />
       ) : (
         <div className="space-y-6">
           <section className="rounded-[36px] border border-ink/8 bg-white p-8 shadow-soft">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="max-w-3xl">
                 <p className="text-sm uppercase tracking-[0.25em] text-ink/45">Assignment result</p>
-                <h1 className="mt-3 font-display text-5xl text-ink">{item.title ?? "Untitled assignment"}</h1>
+                <h1 className="mt-3 font-display text-5xl text-ink">
+                  {item.title ?? "Untitled assignment"}
+                </h1>
                 <p className="mt-3 text-sm leading-7 text-ink/70">{item.questionText}</p>
                 <div className="mt-5 flex flex-wrap gap-2">
                   {item.courseName ? (
@@ -98,7 +114,11 @@ export const ResultPage = () => {
 
           {item.status !== "completed" || !item.result ? (
             <EmptyState
-              title={item.status === "refused" ? "The request was refused" : "The explanation did not complete"}
+              title={
+                item.status === "refused"
+                  ? "The request was refused"
+                  : "The explanation did not complete"
+              }
               body={
                 item.refusalReason ??
                 item.errorMessage ??
@@ -123,15 +143,23 @@ export const ResultPage = () => {
                     item.result.commonMistakes[0] ?? "Check the common mistakes before writing."
                   ]
                 ].map(([label, value]) => (
-                  <div key={label} className="rounded-[28px] border border-ink/8 bg-white p-5 shadow-soft">
-                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">{label}</p>
+                  <div
+                    key={label}
+                    className="rounded-[28px] border border-ink/8 bg-white p-5 shadow-soft"
+                  >
+                    <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">
+                      {label}
+                    </p>
                     <p className="mt-3 text-sm leading-7 text-ink/78">{value}</p>
                   </div>
                 ))}
               </section>
 
               <div className="grid gap-6 lg:grid-cols-2">
-                <SummaryCard title="Simplified Explanation" body={item.result.simplifiedExplanation} />
+                <SummaryCard
+                  title="Simplified Explanation"
+                  body={item.result.simplifiedExplanation}
+                />
                 <SummaryCard title="What the Lecturer Wants" body={item.result.lecturerIntent} />
                 <ListCard title="Step-by-Step Breakdown" items={item.result.stepByStep} />
                 <ListCard title="Suggested Structure" items={item.result.suggestedStructure} />
@@ -143,7 +171,10 @@ export const ResultPage = () => {
                 />
                 <ListCard
                   title="Before You Start Writing"
-                  items={buildWritingChecklist(item.result.commonMistakes, item.result.suggestedStructure)}
+                  items={buildWritingChecklist(
+                    item.result.commonMistakes,
+                    item.result.suggestedStructure
+                  )}
                 />
                 {item.wordCount ? (
                   <ListCard

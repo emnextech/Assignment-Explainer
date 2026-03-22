@@ -69,9 +69,7 @@ export async function createExplanation(
   const data = await parseJson(response);
 
   if (!response.ok) {
-    throw new Error(
-      getApiErrorMessage(data, "Failed to create assignment explanation.")
-    );
+    throw new Error(getApiErrorMessage(data, "Failed to create assignment explanation."));
   }
 
   return createExplanationResponseSchema.parse(data);

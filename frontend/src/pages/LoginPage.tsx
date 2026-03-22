@@ -6,7 +6,11 @@ import { AuthNotice } from "../components/auth/AuthNotice";
 import { PasswordInput } from "../components/ui/PasswordInput";
 import { useAuth } from "../hooks/useAuth";
 import { getLoginErrorMessage, isVerificationError } from "../lib/authMessages";
-import { clearRedirectTarget, resolveRedirectTarget, writeRedirectTarget } from "../lib/authRedirect";
+import {
+  clearRedirectTarget,
+  resolveRedirectTarget,
+  writeRedirectTarget
+} from "../lib/authRedirect";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 
@@ -90,7 +94,8 @@ export const LoginPage = () => {
         ) : null}
         {needsVerification ? (
           <AuthNotice variant="warning">
-            Verify your email first, then sign in. If you need another link, use the verification screen instead of retrying here.
+            Verify your email first, then sign in. If you need another link, use the verification
+            screen instead of retrying here.
           </AuthNotice>
         ) : null}
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
@@ -108,7 +113,9 @@ export const LoginPage = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <p className="text-xs font-semibold text-ink/50">Use the same email you used during signup.</p>
+          <p className="text-xs font-semibold text-ink/50">
+            Use the same email you used during signup.
+          </p>
         </label>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Password

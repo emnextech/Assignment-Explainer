@@ -63,7 +63,10 @@ export const VerifyEmailPage = () => {
     const params = new URLSearchParams(location.search);
     return params.get("email") ?? session?.user?.email ?? "";
   }, [location.search, session?.user?.email]);
-  const next = useMemo(() => resolveRedirectTarget(location.search, "/dashboard"), [location.search]);
+  const next = useMemo(
+    () => resolveRedirectTarget(location.search, "/dashboard"),
+    [location.search]
+  );
   const source = useMemo<VerificationSource>(() => {
     const candidate = new URLSearchParams(location.search).get("source");
     return candidate === "login" || candidate === "session" ? candidate : "signup";

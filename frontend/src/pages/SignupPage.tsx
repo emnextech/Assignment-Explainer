@@ -67,9 +67,12 @@ export const SignupPage = () => {
 
     try {
       await signUp(email.trim().toLowerCase(), password, fullName.trim());
-      navigate(`/verify-email?email=${encodeURIComponent(email.trim().toLowerCase())}&source=signup`, {
-        replace: true
-      });
+      navigate(
+        `/verify-email?email=${encodeURIComponent(email.trim().toLowerCase())}&source=signup`,
+        {
+          replace: true
+        }
+      );
     } catch (submissionError) {
       setError(getSignupErrorMessage(submissionError));
     } finally {
@@ -134,7 +137,9 @@ export const SignupPage = () => {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
-          <p className="text-xs font-semibold text-ink/50">Use any email you can access for verification.</p>
+          <p className="text-xs font-semibold text-ink/50">
+            Use any email you can access for verification.
+          </p>
         </label>
         <label className="block space-y-2 text-sm font-semibold text-ink/70">
           Create password
@@ -169,7 +174,9 @@ export const SignupPage = () => {
         ) : null}
         <Button
           className="w-full bg-accent"
-          disabled={submitting || !fullName.trim() || !email.trim() || !password || !confirmPassword}
+          disabled={
+            submitting || !fullName.trim() || !email.trim() || !password || !confirmPassword
+          }
           type="submit"
         >
           {submitting ? "Creating account..." : "Create account"}

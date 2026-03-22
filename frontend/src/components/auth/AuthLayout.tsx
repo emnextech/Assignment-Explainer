@@ -52,9 +52,7 @@ export const AuthLayout = ({
               {badge}
             </p>
           ) : null}
-          <h1 className="mt-5 font-display text-4xl leading-tight text-ink sm:text-5xl">
-            {title}
-          </h1>
+          <h1 className="mt-5 font-display text-4xl leading-tight text-ink sm:text-5xl">{title}</h1>
           <p className="mt-3 max-w-2xl text-sm leading-6 text-ink/65 [overflow-wrap:anywhere] sm:mt-4 sm:leading-7 sm:text-base">
             {description}
           </p>
@@ -73,8 +71,13 @@ export const AuthLayout = ({
           </p>
           <div className="mt-4 space-y-3 sm:mt-6 sm:space-y-4">
             {asideItems.map((item) => (
-              <div key={item.title} className="rounded-[22px] border border-white/10 bg-white/5 p-4 sm:rounded-[28px] sm:p-5">
-                <h2 className="font-display text-xl [overflow-wrap:anywhere] sm:text-2xl">{item.title}</h2>
+              <div
+                key={item.title}
+                className="rounded-[22px] border border-white/10 bg-white/5 p-4 sm:rounded-[28px] sm:p-5"
+              >
+                <h2 className="font-display text-xl [overflow-wrap:anywhere] sm:text-2xl">
+                  {item.title}
+                </h2>
                 <p className="mt-2 text-sm leading-6 text-white/75 [overflow-wrap:anywhere] sm:leading-7">
                   {item.body}
                 </p>

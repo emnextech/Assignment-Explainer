@@ -47,9 +47,14 @@ export const AiProgressChart = ({
   const currentStepIndex = getCurrentStepIndex(status, explanationId);
 
   return (
-    <section className="mt-4 rounded-2xl border border-ink/8 bg-sand/70 p-4" aria-label="AI progress">
+    <section
+      className="mt-4 rounded-2xl border border-ink/8 bg-sand/70 p-4"
+      aria-label="AI progress"
+    >
       <div className="flex items-center justify-between gap-3">
-        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/52">AI processing flow</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/52">
+          AI processing flow
+        </p>
         <p className="text-xs font-semibold text-ink/60">{statusLabel[status]}</p>
       </div>
 
@@ -57,7 +62,8 @@ export const AiProgressChart = ({
         {steps.map((step, index) => {
           const isDone = index < currentStepIndex || status === "completed";
           const isCurrent = index === currentStepIndex && status === "pending";
-          const isBlocked = index === currentStepIndex && (status === "failed" || status === "refused");
+          const isBlocked =
+            index === currentStepIndex && (status === "failed" || status === "refused");
 
           let fillWidth = "0%";
           if (isDone) {

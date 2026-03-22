@@ -8,7 +8,11 @@ import {
   writeRedirectTarget
 } from "../lib/authRedirect";
 
-export const GuestOnly = ({ allowUnverifiedSession = false }: { allowUnverifiedSession?: boolean }) => {
+export const GuestOnly = ({
+  allowUnverifiedSession = false
+}: {
+  allowUnverifiedSession?: boolean;
+}) => {
   const { isVerified, loading, session } = useAuth();
   const location = useLocation();
 

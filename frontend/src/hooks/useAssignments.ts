@@ -2,11 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { AssignmentInput } from "@assignment-explainer/shared";
 
-import {
-  createExplanation,
-  fetchHistory,
-  fetchHistoryItem
-} from "../lib/api";
+import { createExplanation, fetchHistory, fetchHistoryItem } from "../lib/api";
 import { useAuth } from "./useAuth";
 
 export const useHistoryList = () => {

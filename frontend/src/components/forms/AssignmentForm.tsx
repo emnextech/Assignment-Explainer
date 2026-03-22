@@ -213,7 +213,8 @@ export const AssignmentForm = ({ onSubmit, submitting = false }: AssignmentFormP
       {error ? <p className="text-sm font-semibold text-rose-600">{error}</p> : null}
 
       <div className="rounded-[28px] border border-ink/8 bg-sand px-4 py-4 text-sm leading-7 text-ink/72">
-        The better the brief, the better the explanation. Include the exact command words, any required structure, and the word count if your lecturer gave one.
+        The better the brief, the better the explanation. Include the exact command words, any
+        required structure, and the word count if your lecturer gave one.
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -228,7 +229,9 @@ export const AssignmentForm = ({ onSubmit, submitting = false }: AssignmentFormP
         >
           Clear form
         </Button>
-        <p className="text-sm text-ink/60">You can revisit every explanation from the history page.</p>
+        <p className="text-sm text-ink/60">
+          You can revisit every explanation from the history page.
+        </p>
       </div>
     </form>
   );

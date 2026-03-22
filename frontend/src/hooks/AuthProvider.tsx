@@ -1,10 +1,4 @@
-import {
-  startTransition,
-  useEffect,
-  useMemo,
-  useState,
-  type PropsWithChildren
-} from "react";
+import { startTransition, useEffect, useMemo, useState, type PropsWithChildren } from "react";
 
 import type { AuthChangeEvent, Session, User } from "@supabase/supabase-js";
 

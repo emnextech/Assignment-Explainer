@@ -15,6 +15,8 @@ describe("AssignmentForm", () => {
     await user.click(screen.getByRole("button", { name: /explain assignment/i }));
 
     expect(onSubmit).not.toHaveBeenCalled();
-    expect(screen.getAllByText(/string must contain at least 20 character/i).length).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/string must contain at least 20 character/i).length
+    ).toBeGreaterThan(0);
   });
 });

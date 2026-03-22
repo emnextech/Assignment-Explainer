@@ -24,13 +24,20 @@ export const DashboardPage = () => {
             Understand the assignment before you start writing.
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-8 text-ink/68">
-            Build a clearer plan for every brief, keep your past explanations organized, and use each result as a practical study guide instead of a passive summary.
+            Build a clearer plan for every brief, keep your past explanations organized, and use
+            each result as a practical study guide instead of a passive summary.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link className="rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white" to="/new-explanation">
+            <Link
+              className="rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white"
+              to="/new-explanation"
+            >
               Create new explanation
             </Link>
-            <Link className="rounded-full border border-ink/10 bg-white px-5 py-3 text-sm font-semibold text-ink" to="/history">
+            <Link
+              className="rounded-full border border-ink/10 bg-white px-5 py-3 text-sm font-semibold text-ink"
+              to="/history"
+            >
               View history
             </Link>
           </div>
@@ -41,8 +48,13 @@ export const DashboardPage = () => {
             ["Completed breakdowns", String(completedCount)],
             ["Courses tracked", String(courseCount)]
           ].map(([label, value]) => (
-            <div key={label} className="rounded-[30px] border border-ink/8 bg-white p-6 shadow-soft">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">{label}</p>
+            <div
+              key={label}
+              className="rounded-[30px] border border-ink/8 bg-white p-6 shadow-soft"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">
+                {label}
+              </p>
               <p className="mt-4 font-display text-5xl text-ink">{value}</p>
             </div>
           ))}
@@ -58,7 +70,10 @@ export const DashboardPage = () => {
             </Link>
           </div>
           {historyQuery.isLoading ? (
-            <EmptyState title="Loading history" body="Fetching your saved assignment explanations." />
+            <EmptyState
+              title="Loading history"
+              body="Fetching your saved assignment explanations."
+            />
           ) : recentItems.length === 0 ? (
             <EmptyState
               title="No saved explanations yet"
@@ -74,8 +89,12 @@ export const DashboardPage = () => {
                 >
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div className="min-w-0">
-                      <p className="font-display text-2xl text-ink">{item.title ?? "Untitled assignment"}</p>
-                      <p className="mt-1 text-sm text-ink/60">{item.courseName ?? "General course"}</p>
+                      <p className="font-display text-2xl text-ink">
+                        {item.title ?? "Untitled assignment"}
+                      </p>
+                      <p className="mt-1 text-sm text-ink/60">
+                        {item.courseName ?? "General course"}
+                      </p>
                     </div>
                     <StatusBadge status={item.status} />
                   </div>
@@ -88,7 +107,9 @@ export const DashboardPage = () => {
         </div>
 
         <aside className="rounded-[34px] border border-ink/8 bg-white p-6 shadow-soft">
-          <p className="text-sm uppercase tracking-[0.24em] text-ink/45">Make each result more useful</p>
+          <p className="text-sm uppercase tracking-[0.24em] text-ink/45">
+            Make each result more useful
+          </p>
           <ul className="mt-5 space-y-4 text-sm leading-7 text-ink/75">
             <li>Start with the lecturer-intent section before touching your draft.</li>
             <li>Use the step-by-step breakdown to plan your reading order.</li>

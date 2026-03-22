@@ -14,6 +14,10 @@ export const HistoryPage = () => {
   const [query, setQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const items = historyQuery.data?.items;
+  const errorMessage =
+    historyQuery.error instanceof Error
+      ? historyQuery.error.message
+      : "We could not load your assignment history right now.";
   const filteredItems = useMemo(() => {
     return (items ?? []).filter((item) => {
       const matchesQuery =
@@ -37,7 +41,8 @@ export const HistoryPage = () => {
           Every explanation you have saved, in one place.
         </h1>
         <p className="mt-4 text-sm leading-8 text-ink/65">
-          Revisit older briefs, compare how different courses frame their questions, and open each breakdown when you need a faster restart.
+          Revisit older briefs, compare how different courses frame their questions, and open each
+          breakdown when you need a faster restart.
         </p>
       </div>
       <div className="mb-6 grid gap-4 rounded-[30px] border border-ink/8 bg-white p-5 shadow-soft md:grid-cols-[1fr_auto]">
@@ -65,7 +70,15 @@ export const HistoryPage = () => {
         </div>
       </div>
       {historyQuery.isLoading ? (
-        <EmptyState title="Loading history" body="Collecting your latest assignment explanations." />
+        <EmptyState
+          title="Loading history"
+          body="Collecting your latest assignment explanations."
+        />
+      ) : historyQuery.isError ? (
+        <EmptyState
+          title="History unavailable"
+          body={`${errorMessage} Check your backend URL and production environment settings, then try again.`}
+        />
       ) : filteredItems.length ? (
         <div className="grid gap-4">
           {filteredItems.map((item) => (
@@ -76,7 +89,9 @@ export const HistoryPage = () => {
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div className="max-w-3xl">
-                  <p className="font-display text-2xl text-ink">{item.title ?? "Untitled assignment"}</p>
+                  <p className="font-display text-2xl text-ink">
+                    {item.title ?? "Untitled assignment"}
+                  </p>
                   <p className="mt-1 text-sm text-ink/55">{item.courseName ?? "General course"}</p>
                 </div>
                 <StatusBadge status={item.status} />

@@ -73,7 +73,8 @@ export const ProfilePage = () => {
           </div>
           <div className="mt-5 space-y-3 text-sm leading-6 text-ink/72 sm:mt-6 sm:space-y-4 sm:leading-7">
             <p>
-              <span className="font-semibold text-ink">Email:</span> {user?.email ?? "Not available"}
+              <span className="font-semibold text-ink">Email:</span>{" "}
+              {user?.email ?? "Not available"}
             </p>
             <p>
               <span className="font-semibold text-ink">University:</span> {university}
@@ -101,7 +102,9 @@ export const ProfilePage = () => {
                   : "col-span-1 rounded-[24px] border border-ink/8 bg-white p-4 shadow-soft sm:rounded-[30px] sm:p-6"
               }
             >
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">{item.label}</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-ink/45">
+                {item.label}
+              </p>
               <p
                 className={
                   item.compact
@@ -141,7 +144,8 @@ export const ProfilePage = () => {
               />
             </label>
             <p className="rounded-[24px] border border-ink/8 bg-sand px-4 py-3 text-sm leading-6 text-ink/72 sm:rounded-[28px] sm:leading-7">
-              Your name appears across the navbar, dashboard, and result pages, so keep it updated to make the workspace feel personal and trustworthy.
+              Your name appears across the navbar, dashboard, and result pages, so keep it updated
+              to make the workspace feel personal and trustworthy.
             </p>
             {message ? <p className="text-sm font-semibold text-emerald-700">{message}</p> : null}
             {error ? <p className="text-sm font-semibold text-rose-600">{error}</p> : null}
@@ -160,8 +164,14 @@ export const ProfilePage = () => {
           <p className="text-sm uppercase tracking-[0.24em] text-ink/45">Profile insights</p>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-ink/75 sm:mt-5 sm:space-y-4 sm:leading-7">
             <li>Your name now appears across the app instead of your raw email address.</li>
-            <li>Keep your profile updated so the workspace feels like a real student dashboard, not a temporary session.</li>
-            <li>Track how many assignments you have completed and which course you are actively working in.</li>
+            <li>
+              Keep your profile updated so the workspace feels like a real student dashboard, not a
+              temporary session.
+            </li>
+            <li>
+              Track how many assignments you have completed and which course you are actively
+              working in.
+            </li>
           </ul>
         </div>
       </section>
@@ -170,9 +180,16 @@ export const ProfilePage = () => {
         <div className="rounded-[28px] border border-ink/8 bg-white p-5 shadow-soft sm:rounded-[34px] sm:p-6">
           <p className="text-sm uppercase tracking-[0.24em] text-ink/45">Study routine</p>
           <ul className="mt-4 space-y-3 text-sm leading-6 text-ink/75 sm:mt-5 sm:space-y-4 sm:leading-7">
-            <li>Create an explanation before you read deeply so you know what the brief is asking.</li>
-            <li>Use the result page as a planning tool, not a replacement for your own argument.</li>
-            <li>Open your history before starting a similar assignment to compare structures and mistakes.</li>
+            <li>
+              Create an explanation before you read deeply so you know what the brief is asking.
+            </li>
+            <li>
+              Use the result page as a planning tool, not a replacement for your own argument.
+            </li>
+            <li>
+              Open your history before starting a similar assignment to compare structures and
+              mistakes.
+            </li>
           </ul>
         </div>
         <div className="rounded-[28px] border border-ink/8 bg-white p-5 shadow-soft sm:rounded-[34px] sm:p-6">
@@ -180,7 +197,10 @@ export const ProfilePage = () => {
           {items.length ? (
             <div className="mt-4 space-y-3 sm:mt-5">
               {items.slice(0, 3).map((item) => (
-                <div key={item.explanationId} className="rounded-[24px] border border-ink/6 bg-sand p-4">
+                <div
+                  key={item.explanationId}
+                  className="rounded-[24px] border border-ink/6 bg-sand p-4"
+                >
                   <p className="font-semibold text-ink">{item.title ?? "Untitled assignment"}</p>
                   <p className="mt-1 text-sm text-ink/65">{item.courseName ?? "General course"}</p>
                 </div>

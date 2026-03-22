@@ -33,13 +33,12 @@ export const AppShell = ({
       <header className="sticky top-4 z-40 px-4 pt-4">
         <div className="mx-auto max-w-6xl rounded-full border border-ink/10 bg-white/92 px-4 py-3 shadow-soft backdrop-blur">
           <div className="flex items-center gap-3">
-            <Link
-              to="/dashboard"
-              className="shrink-0"
-            >
+            <Link to="/dashboard" className="shrink-0">
               <span className="flex items-center gap-2">
                 <img alt="BriefLens logo" className="h-8 w-8" src={briefLensMark} />
-                <span className="font-display text-xl font-semibold text-ink md:text-2xl">BriefLens</span>
+                <span className="font-display text-xl font-semibold text-ink md:text-2xl">
+                  BriefLens
+                </span>
               </span>
             </Link>
             <nav className="hidden min-w-0 flex-1 items-center justify-center gap-2 md:flex">
@@ -70,9 +69,7 @@ export const AppShell = ({
                   <span className="block max-w-40 truncate text-sm font-semibold text-ink">
                     {displayName}
                   </span>
-                  <span className="block max-w-40 truncate text-xs text-ink/55">
-                    {university}
-                  </span>
+                  <span className="block max-w-40 truncate text-xs text-ink/55">{university}</span>
                 </span>
               </Link>
               {onSignOut ? (

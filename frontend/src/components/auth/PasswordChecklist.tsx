@@ -16,13 +16,7 @@ export const PasswordChecklist = ({ password }: { password: string }) => {
   const rules = getPasswordRules(password);
   const passedCount = rules.filter((rule) => rule.passed).length;
   const strengthLabel =
-    passedCount === 4
-      ? "Strong"
-      : passedCount >= 2
-        ? "Fair"
-        : password.length
-          ? "Weak"
-          : "Not set";
+    passedCount === 4 ? "Strong" : passedCount >= 2 ? "Fair" : password.length ? "Weak" : "Not set";
 
   return (
     <div className="rounded-[20px] border border-ink/8 bg-sand px-4 py-3 text-sm text-ink/72 sm:rounded-[24px] sm:py-4">
